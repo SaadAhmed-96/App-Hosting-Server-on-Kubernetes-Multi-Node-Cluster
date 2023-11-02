@@ -9,12 +9,10 @@ This report outlines the approach taken to successfully deploy a WordPress websi
 
 The objective of this project was to deploy a WordPress website on a Kubernetes cluster while utilizing Nginx for the front-end web server, PHP-FPM for serving PHP on the backend, and MySQL (or MariaDB) for the database backend. The deployment was configured to handle a live domain (saadcloudways.ml) and included SSL certificate issuance via cert-manager for secure access. The deployment was conduction on a Cloud Provider with the following **specifications**:
 
-
-
-    * Ingress-Nginx
-    * Server: Litespeed
-    * SSL
-    * Number of Applications: 1
+* Ingress-Nginx
+* Server: Litespeed
+* SSL
+* Number of Applications: 1
 * Minimum Pods per Application: 2
 * Maximum Pods per Application: 10
 * Pod Size: 512MB, 1 vCPU
@@ -73,28 +71,3 @@ An Ingress resource was configured to route external traffic to the live domain 
 8. Horizontal Pod Autoscaling (HPA):
 
 HPA was implemented with a target CPU and memory utilization of 80%. This ensures that the application scales dynamically based on demand, optimizing resource usage.
-
-
-
-5. Issued Let’s Encrypt first using Let’s encrypt staging api to avoid rate limit incase of failures. Once, SSL got issued successfully then the api URL was changed to production:
-
-    
-
-<p id="gdcalert5" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image5.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert6">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image5.png "image_tooltip")
-
-
-6. The Nginx-Ingress Controller running along side with wordpress deployment (which contains Nginx+FPM as side-car) on NodePort & SQL deployment on ClusterIP (as we don’t need to access the MySQL service from outside on this scenario) : 
-
-<p id="gdcalert6" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image6.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert7">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image6.png "image_tooltip")
-Lastly, Ingress pointing towards my domain: 
-
-<p id="gdcalert7" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image7.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert8">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image7.png "image_tooltip")
