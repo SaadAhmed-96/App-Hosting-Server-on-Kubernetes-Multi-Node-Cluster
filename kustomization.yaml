@@ -1,0 +1,10 @@
+cat <<EOF >./kustomization.yaml
+secretGenerator:
+- name: mysql-pass
+  literals:
+  - password=admin123
+EOF
+
+
+Secret using Kustomization is created by the following command: kubectl apply -k .
+Reference: https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kustomize/
