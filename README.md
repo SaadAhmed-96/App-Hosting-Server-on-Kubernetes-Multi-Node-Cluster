@@ -1,16 +1,30 @@
 # Implementing-Nginx-PHP-FPM-and-WordPress-on-a-Multi-Master-Node-Cluster-with-Live-Domain
 
-## <span style="text-decoration:underline;">Executive Summary:</span>
+## Executive Summary:
 
-This report outlines the approach taken to successfully deploy a WordPress website with Nginx, PHP-FPM, and MySQL on a multi-master node Kubernetes cluster, utilizing a live domain (saadcloudways.ml). The solution achieves high availability, security, and scalability while adhering to best practices. Below is a summary of the key steps and configurations involved.
-
-
-## <span style="text-decoration:underline;">Introduction:</span>
-
-The objective of this project was to deploy a WordPress website on a Kubernetes cluster while utilizing Nginx for the front-end web server, PHP-FPM for serving PHP on the backend, and MySQL (or MariaDB) for the database backend. The deployment was configured to handle a live domain (saadcloudways.ml) and included SSL certificate issuance via cert-manager for secure access.
+This report outlines the approach taken to successfully deploy a WordPress website with Nginx, PHP-FPM, and MySQL on a multi-master node Kubernetes cluster, utilizing a live domain (saadcloudways.ml). The solution achieves high availability, security, and scalability while adhering to best practices. Below is a summary of the key steps and configurations involved. The project successfully has utilized key technology like Horizontal Pod Autoscaling (HPA).
 
 
-## <span style="text-decoration:underline;">Approach:</span>
+## Introduction:
+
+The objective of this project was to deploy a WordPress website on a Kubernetes cluster while utilizing Nginx for the front-end web server, PHP-FPM for serving PHP on the backend, and MySQL (or MariaDB) for the database backend. The deployment was configured to handle a live domain (saadcloudways.ml) and included SSL certificate issuance via cert-manager for secure access. The deployment was conduction on a Cloud Provider with the following **specifications**:
+
+
+
+    * Ingress-Nginx
+    * Server: Litespeed
+    * SSL
+    * Number of Applications: 1
+* Minimum Pods per Application: 2
+* Maximum Pods per Application: 10
+* Pod Size: 512MB, 1 vCPU
+* Node Size: 2GB
+* Target CPU for HPA: 80%
+* Target Memory for HPA: 80%
+* &lt;domain.com>
+
+
+## Approach:
 
 
 
@@ -55,48 +69,11 @@ The MySQL service was configured as ClusterIP, limiting external access since it
 An Ingress resource was configured to route external traffic to the live domain (saadcloudways.ml) to the WordPress deployment within the cluster, ensuring seamless access to the website.
 
 
-## Results:
 
+8. Horizontal Pod Autoscaling (HPA):
 
+HPA was implemented with a target CPU and memory utilization of 80%. This ensures that the application scales dynamically based on demand, optimizing resource usage.
 
-1. Live-Domain loading Website (**saadcloudways.ml)**: 
-
-<p id="gdcalert1" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image1.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert2">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image1.png "image_tooltip")
-
-2. Wordpress along with MySQL pods being ran:
-
-    **Note**: The “1” restart shown among mysql pods happened due to “Liveness Probe” attached. The MySQL image didn’t get downloaded within the grace period. Hence, a restart was made.
-
-
-    
-
-<p id="gdcalert2" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image2.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert3">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image2.png "image_tooltip")
-
-
-3. Nginx configuration made to forward any requests with .php extension to PHP-FPM TCP port:
-
-    
-
-<p id="gdcalert3" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image3.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert4">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image3.png "image_tooltip")
- 
-
-4. SSL certificate issued to the domain via cert-manager implementation using helm chart:
-
-    
-
-<p id="gdcalert4" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image4.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert5">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image4.png "image_tooltip")
 
 
 5. Issued Let’s Encrypt first using Let’s encrypt staging api to avoid rate limit incase of failures. Once, SSL got issued successfully then the api URL was changed to production:
