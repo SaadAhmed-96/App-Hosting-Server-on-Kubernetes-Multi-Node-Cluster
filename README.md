@@ -58,31 +58,31 @@ HPA was implemented with a target CPU and memory utilization of 80%. This ensure
 ## Results:
 Live-Domain loading Website (saadcloudways.ml): 
 
-![alt_text](images/image1.png "image_tooltip")
+![alt_text](images/images1.png "image_tooltip")
 
 Wordpress along with MySQL pods being ran:
 
 Note: The “1” restart shown among mysql pods happened due to “Liveness Probe” attached. The MySQL image didn’t get downloaded within the grace period. Hence, a restart was made.
 
-![alt_text](images/image2.png "image_tooltip")
+![alt_text](images/images2.png "image_tooltip")
 
 
 Nginx configuration made to forward any requests with .php extension to PHP-FPM TCP port:
  
-![alt_text](images/image3.png "image_tooltip")
+![alt_text](images/images3.png "image_tooltip")
 
 SSL certificate issued to the domain via cert-manager implementation using helm chart:
 
-![alt_text](images/image4.png "image_tooltip")
+![alt_text](images/images4.png "image_tooltip")
 
 Issued Let’s Encrypt first using Let’s encrypt staging api to avoid rate limit incase of failures. Once, SSL got issued successfully then the api URL was changed to production:
 
-![alt_text](images/image5.png "image_tooltip")
+![alt_text](images/images5.png "image_tooltip")
 
 The Nginx-Ingress Controller running along side with wordpress deployment (which contains Nginx+FPM as side-car) on NodePort & SQL deployment on ClusterIP (as we don’t need to access the MySQL service from outside on this scenario):
 
-![alt_text](images/image6.png "image_tooltip")
+![alt_text](images/images6.png "image_tooltip")
 
 Lastly, Ingress pointing towards my domain: 
 
-![alt_text](images/image7.png "image_tooltip")
+![alt_text](images/images7.png "image_tooltip")
